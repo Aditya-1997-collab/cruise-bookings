@@ -1,17 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
+import {SEED_BOOKINGS} from '../seed/data';
 
 const initialState = {
-  items: [
-    { id: '1', title: 'Merlion Cruise', date: '23 Apr 2025, 5 PM', status: 'Upcoming' },
-    { id: '2', title: 'River Cruise', date: '25 Apr 2025, 7 PM', status: 'Completed' },
-    { id: '3', title: 'Night Cruise', date: '28 Apr 2025, 9 PM', status: 'Canceled' },
-  ],
+  list: SEED_BOOKINGS,     
+  filter: 'All',          
+  search: '',
 };
 
-const bookingsSlice = createSlice({
+const slice = createSlice({
   name: 'bookings',
   initialState,
-  reducers: {},
+  reducers: {
+    setFilter: (state, {payload}) => { state.filter = payload; },
+    setSearch: (state, {payload}) => { state.search = payload; },
+    deleteBooking: (state, {payload}) => {
+      state.list = state.list.filter(b => b.id !== payload);
+    },
+  },
 });
 
-export default bookingsSlice.reducer;
+export const {setFilter, setSearch, deleteBooking} = slice.actions;
+export default slice.reducer;
